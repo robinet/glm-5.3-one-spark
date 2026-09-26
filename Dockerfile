@@ -461,6 +461,9 @@ COPY overlay/patch_spinwait.py /opt/glm53/patch_spinwait.py
 COPY tests/test_spinwait_patch.py /opt/glm53/test_spinwait_patch.py
 COPY overlay/patch_indexer_workspace.py /opt/glm53/patch_indexer_workspace.py
 COPY tests/test_indexer_workspace.py /opt/glm53/test_indexer_workspace.py
+# Opt-in at container start (ONE_SPARK_PARTIAL_APC=1 in scripts/serve-one-spark.sh), not applied at build.
+COPY overlay/patch_partial_prefix_hits.py /opt/glm53/patch_partial_prefix_hits.py
+COPY tests/test_partial_prefix_hits.py /opt/glm53/test_partial_prefix_hits.py
 COPY overlay/ablit_runtime.py /opt/glm53/ablit_runtime.py
 COPY overlay/patch_ablit.py /opt/glm53/patch_ablit.py
 COPY overlay/patch_vision_qkv_mapper.py /opt/glm53/patch_vision_qkv_mapper.py
