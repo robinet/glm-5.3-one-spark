@@ -72,5 +72,5 @@ exec vllm serve "$MODEL_PATH" \
   --kv-cache-dtype fp8 \
   --speculative-config "$SPEC" \
   --chat-template /opt/glm53/chat_template.jinja \
-  --limit-mm-per-prompt '{"image":2,"video":0}' --skip-mm-profiling \
+  --limit-mm-per-prompt '{"image":0,"video":0}' --skip-mm-profiling \
   --cudagraph-capture-sizes 1 2 4 8 16 24 32

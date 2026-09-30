@@ -26,8 +26,8 @@ export HOST="0.0.0.0"
 export PORT=8000
 export CONTAINER="glm53-one-spark"
 
-export ONE_SPARK_UTIL=0.80
-export ONE_SPARK_CTX=262144
+export ONE_SPARK_UTIL=0.85
+export ONE_SPARK_CTX=524288
 export ONE_SPARK_SEQS=1
 export ONE_SPARK_ASYNC=0
 export ONE_SPARK_DRAFT_BLOCK=1024
