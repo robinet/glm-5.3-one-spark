@@ -8,12 +8,13 @@ CONTAINER="${CONTAINER:-glm53-one-spark}"
 HOST="${HOST:-127.0.0.1}"
 PORT="${PORT:-18080}"
 
-[[ -f "$MODEL_DIR/config.json" && -f "$MODEL_DIR/model.safetensors.index.json" ]] || {
-  echo "Target checkpoint missing at $MODEL_DIR; run ./download.sh first." >&2; exit 2;
-}
-[[ -f "$DFLASH_DIR/config.json" ]] || {
-  echo "DFlash2 checkpoint missing at $DFLASH_DIR; run ./download.sh first." >&2; exit 2;
-}
+# [[ -f "$MODEL_DIR/config.json" && -f "$MODEL_DIR/model.safetensors.index.json" ]] || {
+#   echo "Target checkpoint missing at $MODEL_DIR; run ./download.sh first." >&2; exit 2;
+# }
+# [[ -f "$DFLASH_DIR/config.json" ]] || {
+#   echo "DFlash2 checkpoint missing at $DFLASH_DIR; run ./download.sh first." >&2; exit 2;
+# }
+
 command -v docker >/dev/null || { echo 'Docker is required.' >&2; exit 2; }
 docker info >/dev/null
 
@@ -49,6 +50,8 @@ docker run -d --name "$CONTAINER" --gpus all --network host --ipc=host \
   -e ONE_SPARK_MNBT="${ONE_SPARK_MNBT:-7168}" -e ONE_SPARK_ASYNC="${ONE_SPARK_ASYNC:-}" -e ONE_SPARK_APC="${ONE_SPARK_APC:-1}" \
   -e ONE_SPARK_DRAFT_BLOCK="${ONE_SPARK_DRAFT_BLOCK:-}" -e ONE_SPARK_MAMBA_SEED_FIX="${ONE_SPARK_MAMBA_SEED_FIX:-1}" \
   -e ONE_SPARK_PARTIAL_APC="${ONE_SPARK_PARTIAL_APC:-0}" \
+  -e ONE_SPARK_MODEL_PATH="${ONE_SPARK_MODEL_PATH:-/model}" \
+  -e ONE_SPARK_DRAFT_PATH="${ONE_SPARK_DRAFT_PATH:-/draft}" \
   -v "$MODEL_DIR:/model:ro" -v "$DFLASH_DIR:/draft:ro" \
   -v "$ROOT/scripts/serve-one-spark.sh:/start.sh:ro" \
   -v "${CACHE_ROOT:-$HOME/.cache/glm53-one-spark}/vllm:/root/.cache/vllm" \

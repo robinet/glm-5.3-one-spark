@@ -16,8 +16,11 @@ else
   export BUILD=0
 fi
 
-export MODEL_DIR="$HF_HOME/hub/models--turboderp--GLM-5.3-Flash-exl3/snapshots/51058cd551c7e570d87bd32a4adee720edce2349"
-export DFLASH_DIR="$HF_HOME/hub/models--incoai--GLM-5.3-Flash-DFlash2/snapshots/bf582e4eacc1810f76656d1811693ff6c6737d2a"
+export MODEL_DIR="$HF_CACHE/hub/models--turboderp--GLM-5.3-Flash-exl3"
+export ONE_SPARK_MODEL_PATH="/model/snapshots/51058cd551c7e570d87bd32a4adee720edce2349"
+
+export DFLASH_DIR="$HF_CACHE/hub/models--incoai--GLM-5.3-Flash-DFlash2"
+export ONE_SPARK_DRAFT_PATH="/draft/snapshots/bf582e4eacc1810f76656d1811693ff6c6737d2a"
 
 export HOST="0.0.0.0"
 export PORT=8000

@@ -4,7 +4,9 @@ set -euo pipefail
 # so it must run at container start. The other overlay patches are applied at image build.
 python3 /opt/glm53/patch_glm_video_placeholders.py
 K="${ONE_SPARK_K:-5}"  # DFlash2 draft depth; 5 = best prose/code, 8 = best structured (see README K sweep)
-SPEC='{"method":"dflash","model":"/draft","num_speculative_tokens":'"$K"',"kv_cache_dtype":"auto","draft_sample_method":"probabilistic","rejection_sample_method":"standard","draft_tensor_parallel_size":1}'
+MODEL_PATH="${ONE_SPARK_MODEL_PATH:-/model}"
+DRAFT_PATH="${ONE_SPARK_DRAFT_PATH:-/draft}"
+SPEC='{"method":"dflash","model":"'"$DRAFT_PATH"'","num_speculative_tokens":'"$K"',"kv_cache_dtype":"auto","draft_sample_method":"probabilistic","rejection_sample_method":"standard","draft_tensor_parallel_size":1}'
 # ---- Runtime knobs (all default to the shipped recipe behaviour) ----
 # ONE_SPARK_CTX / ONE_SPARK_UTIL / ONE_SPARK_SEQS / ONE_SPARK_MNBT: context, gpu-memory-utilization,
 #   max-num-seqs, max-num-batched-tokens.
@@ -55,8 +57,8 @@ if [ "${ONE_SPARK_PARTIAL_APC:-0}" = "1" ]; then
     exit 97
   }
 fi
-exec vllm serve /model \
-  --served-model-name GLM-5.3-Flash-EXL3-2.05 \
+exec vllm serve "$MODEL_PATH" \
+  --served-model-name GLM-5.3-Flash \
   --host "${ONE_SPARK_HOST:-127.0.0.1}" --port "${ONE_SPARK_PORT:-18080}" \
   --tensor-parallel-size 1 \
   --tool-call-parser glm47 --enable-auto-tool-choice \
