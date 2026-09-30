@@ -16,11 +16,11 @@ else
   export BUILD="${BUILD:-0}"
 fi
 
-export MODEL_DIR="${MODEL_DIR:-$HF_HOME/hub/models--turboderp--GLM-5.3-Flash-exl3/snapshots/51058cd551c7e570d87bd32a4adee720edce2349}"
-export DFLASH_DIR="${DFLASH_DIR:-$HF_HOME/hub/models--incoai--GLM-5.3-Flash-DFlash2/snapshots/bf582e4eacc1810f76656d1811693ff6c6737d2a}"
-export HOST="${HOST:-0.0.0.0}"
-export PORT="${PORT:-8000}"
-export CONTAINER="${CONTAINER:-glm53-one-spark}"
+export MODEL_DIR="$HF_HOME/hub/models--turboderp--GLM-5.3-Flash-exl3/snapshots/51058cd551c7e570d87bd32a4adee720edce2349"
+export DFLASH_DIR="$HF_HOME/hub/models--incoai--GLM-5.3-Flash-DFlash2/snapshots/bf582e4eacc1810f76656d1811693ff6c6737d2a"
+export HOST="0.0.0.0"
+export PORT=8000
+export CONTAINER="glm53-one-spark"
 
 export ONE_SPARK_UTIL=0.80
 export ONE_SPARK_CTX=262144
