@@ -532,4 +532,4 @@ LABEL glm53.recipe.stamp=${GLM53_RECIPE_STAMP}
 LABEL org.opencontainers.image.title="GLM-5.3 One-Spark" \
     org.opencontainers.image.description="TP1 GLM-5.3-Flash EXL3 2.05 + DFlash2 runtime for one DGX Spark" \
     org.opencontainers.image.licenses="MIT AND Apache-2.0" \
-    org.opencontainers.image.source="https://github.com/gitcommit90/glm-5.3-one-spark"
+    org.opencontainers.image.source="https://github.com/robinet/glm-5.3-one-spark"
