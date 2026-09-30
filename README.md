@@ -128,6 +128,10 @@ See [PROVENANCE.md](PROVENANCE.md) and [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTI
 - `max_num_seqs=4`
 - `max_num_batched_tokens=7168`
 - `gpu_memory_utilization=0.90`
+- Optional `ONE_SPARK_PARTIAL_APC=1`: prefix-cache hits at the prompt's last hash boundary instead of whole
+  7168-token blocks (`overlay/patch_partial_prefix_hits.py`). On a 13.6K-token multi-turn chat, cached-turn TTFT
+  went from 7.2 s to 1.9 s (median of 24 turns). Requires the vLLM #55600 mamba seed fix (PR #4) and refuses to
+  start without it; validated on PR #4's single-Spark shape (SEQS=1, no async, drafter block 1024).
 
 Measured startup allocation:
 

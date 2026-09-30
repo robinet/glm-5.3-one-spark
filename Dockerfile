@@ -419,7 +419,7 @@ PY
 RUN set -eux; \
     mkdir -p /tmp/exllamav3; \
     curl -fsSL "https://github.com/turboderp-org/exllamav3/archive/${EXLLAMAV3_COMMIT}.tar.gz" \
-      | tar -xz -C /tmp/exllamav3 --strip-components=1; \
+    | tar -xz -C /tmp/exllamav3 --strip-components=1; \
     python3 -c "from pathlib import Path; assert (Path('/tmp/exllamav3')/'exllamav3/modules/quant/exl3.py').is_file()"; \
     python3 /opt/glm53/patch_exl3_ext_aarch64.py /tmp/exllamav3/exllamav3/exllamav3_ext; \
     python3 /opt/glm53/patch_exl3_fat_kernel.py /tmp/exllamav3/exllamav3/exllamav3_ext /opt/glm53/exl3-fat-kernel; \
@@ -428,7 +428,7 @@ RUN set -eux; \
     export C_INCLUDE_PATH="/usr/local/lib/python3.12/dist-packages/nvidia/cu13/include${C_INCLUDE_PATH:+:$C_INCLUDE_PATH}"; \
     cd /tmp/exllamav3; \
     TORCH_CUDA_ARCH_LIST=12.1a MAX_JOBS=8 \
-      pip install --no-deps --no-build-isolation --no-cache-dir .; \
+    pip install --no-deps --no-build-isolation --no-cache-dir .; \
     python3 -c "import torch; import exllamav3_ext; assert hasattr(exllamav3_ext, 'exl3_moe'), dir(exllamav3_ext); assert hasattr(exllamav3_ext, 'exl3_fat_gemm'), dir(exllamav3_ext); assert hasattr(exllamav3_ext, 'exl3_fat_gemm_scatter'), dir(exllamav3_ext); print('exllamav3_ext', exllamav3_ext.__file__, 'exl3_moe=yes fat_gemm=yes')"; \
     rm -rf /tmp/exllamav3 /root/.cache/pip
 
@@ -463,6 +463,9 @@ COPY overlay/patch_spinwait.py /opt/glm53/patch_spinwait.py
 COPY tests/test_spinwait_patch.py /opt/glm53/test_spinwait_patch.py
 COPY overlay/patch_indexer_workspace.py /opt/glm53/patch_indexer_workspace.py
 COPY tests/test_indexer_workspace.py /opt/glm53/test_indexer_workspace.py
+# Opt-in at container start (ONE_SPARK_PARTIAL_APC=1 in scripts/serve-one-spark.sh), not applied at build.
+COPY overlay/patch_partial_prefix_hits.py /opt/glm53/patch_partial_prefix_hits.py
+COPY tests/test_partial_prefix_hits.py /opt/glm53/test_partial_prefix_hits.py
 COPY overlay/ablit_runtime.py /opt/glm53/ablit_runtime.py
 COPY overlay/patch_ablit.py /opt/glm53/patch_ablit.py
 COPY overlay/patch_vision_qkv_mapper.py /opt/glm53/patch_vision_qkv_mapper.py
@@ -527,6 +530,6 @@ RUN EXL3_SELFCHECK_GPU=0 python3 /opt/glm53/test_exl3_overlay.py \
 ARG GLM53_RECIPE_STAMP=unknown
 LABEL glm53.recipe.stamp=${GLM53_RECIPE_STAMP}
 LABEL org.opencontainers.image.title="GLM-5.3 One-Spark" \
-      org.opencontainers.image.description="TP1 GLM-5.3-Flash EXL3 2.05 + DFlash2 runtime for one DGX Spark" \
-      org.opencontainers.image.licenses="MIT AND Apache-2.0" \
-      org.opencontainers.image.source="https://github.com/gitcommit90/glm-5.3-one-spark"
+    org.opencontainers.image.description="TP1 GLM-5.3-Flash EXL3 2.05 + DFlash2 runtime for one DGX Spark" \
+    org.opencontainers.image.licenses="MIT AND Apache-2.0" \
+    org.opencontainers.image.source="https://github.com/gitcommit90/glm-5.3-one-spark"

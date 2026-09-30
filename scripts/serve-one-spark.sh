@@ -39,6 +39,22 @@ if [ "${ONE_SPARK_MAMBA_SEED_FIX:-1}" = "1" ]; then
     exit 97
   fi
 fi
+# PR #5: k-pool tail backports. Present after a rebuild; also runnable on stock general23
+# if the overlay was copied into /opt/glm53 at start (see start.sh mount in the follow-up commit).
+if [ -f /opt/glm53/patch_kpool_vllm_backports.py ]; then
+  python3 /opt/glm53/patch_kpool_vllm_backports.py || {
+    echo "[one-spark] FATAL: k-pool backport failed (anchors drifted?)" >&2
+    exit 97
+  }
+fi
+# PR #6: ONE_SPARK_PARTIAL_APC=1 — fine-grained prefix-cache hits instead of whole 7168-token blocks.
+# Requires the vllm#55600 mamba seed fix above; the overlay refuses to start without it.
+if [ "${ONE_SPARK_PARTIAL_APC:-0}" = "1" ]; then
+  python3 /opt/glm53/patch_partial_prefix_hits.py || {
+    echo "[one-spark] FATAL: partial prefix hits failed" >&2
+    exit 97
+  }
+fi
 exec vllm serve /model \
   --served-model-name GLM-5.3-Flash-EXL3-2.05 \
   --host "${ONE_SPARK_HOST:-127.0.0.1}" --port "${ONE_SPARK_PORT:-18080}" \
